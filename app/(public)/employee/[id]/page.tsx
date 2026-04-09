@@ -21,7 +21,7 @@ export default async function EmployeePage({
       <div className="bg-[#545356] py-6 border-b-2 border-ztex-red">
         <div className="max-w-lg mx-auto px-4 flex justify-center">
           <Image
-            src="/images/ztex-logo-white.png"
+            src="/images/ztex-logo-main.png"
             alt="ZTEX Construction Inc."
             width={180}
             height={54}

@@ -22,7 +22,7 @@ export function AdminNav() {
           <div className="flex items-center gap-8">
             <Link href="/admin">
               <Image
-                src="/images/ztex-logo-white.png"
+                src="/images/ztex-logo-main.png"
                 alt="ZTEX"
                 width={120}
                 height={36}

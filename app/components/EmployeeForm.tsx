@@ -228,7 +228,7 @@ export function EmployeeForm({ initialData }: EmployeeFormProps) {
             <div className="bg-ztex-dark rounded-xl overflow-hidden shadow-lg border border-white/5 max-w-sm mx-auto">
               <div className="bg-gradient-to-r from-ztex-red to-ztex-dark-red p-4">
                 <Image
-                  src="/images/ztex-logo-white.png"
+                  src="/images/ztex-logo-main.png"
                   alt="ZTEX"
                   width={100}
                   height={30}

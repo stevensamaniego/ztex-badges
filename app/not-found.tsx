@@ -6,7 +6,7 @@ export default function NotFound() {
     <div className="min-h-screen bg-ztex-black flex items-center justify-center px-4">
       <div className="text-center">
         <Image
-          src="/images/ztex-logo-white.png"
+          src="/images/ztex-logo-main.png"
           alt="ZTEX Construction"
           width={200}
           height={60}

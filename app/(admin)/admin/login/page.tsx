@@ -38,7 +38,7 @@ export default function LoginPage() {
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
           <Image
-            src="/images/ztex-logo-white.png"
+            src="/images/ztex-logo-main.png"
             alt="ZTEX Construction"
             width={200}
             height={60}
