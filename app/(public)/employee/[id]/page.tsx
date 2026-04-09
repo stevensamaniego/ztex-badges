@@ -18,7 +18,7 @@ export default async function EmployeePage({
   return (
     <div className="min-h-screen bg-ztex-black">
       {/* Header */}
-      <div className="bg-gradient-to-r from-ztex-dark-red to-ztex-red py-6">
+      <div className="bg-[#545356] py-6 border-b-2 border-ztex-red">
         <div className="max-w-lg mx-auto px-4 flex justify-center">
           <Image
             src="/images/ztex-logo-white.png"
