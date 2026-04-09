@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>ZTEX Construction — Badge System</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #111114;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 48px;
+    gap: 40px;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  }
+
+  h1 {
+    color: #444;
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    font-weight: 400;
+  }
+
+  .row {
+    display: flex;
+    gap: 28px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .badge-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  .badge-label {
+    color: #555;
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+
+  /* ══════════════════════════════════════
+     BADGE — 2.125" × 3.375" portrait
+     At 96dpi display: 245px × 390px
+     ══════════════════════════════════════ */
+  .badge {
+    width: 245px;
+    height: 390px;
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+    box-shadow:
+      0 2px 4px rgba(0,0,0,0.5),
+      0 8px 24px rgba(0,0,0,0.6),
+      0 0 0 1px rgba(255,255,255,0.04);
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── TOP SECTION: white, logo ── */
+  .badge-top {
+    background: #ffffff;
+    height: 88px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    position: relative;
+    padding: 0 20px;
+  }
+  .badge-top img {
+    height: 36px;
+    width: auto;
+    object-fit: contain;
+    /* keep original logo colors */
+  }
+
+  /* ── ACCENT LINE ── */
+  .accent {
+    height: 3px;
+    flex-shrink: 0;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      #c8960044 8%,
+      #DAA800 25%,
+      #F5C800 50%,
+      #DAA800 75%,
+      #c8960044 92%,
+      transparent 100%
+    );
+  }
+
+  /* ── COLOR BODY ── */
+  .badge-body {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Subtle angular "cut" in the upper-right corner — construction edge detail */
+  .badge-body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 52px 52px 0;
+    border-color: transparent rgba(0,0,0,0.14) transparent transparent;
+    z-index: 2;
+  }
+
+  /* Diagonal "HAZARD" stripe micro-pattern in the very top strip */
+  .body-stripe {
+    height: 10px;
+    flex-shrink: 0;
+    background-image: repeating-linear-gradient(
+      -45deg,
+      rgba(0,0,0,0.15) 0px,
+      rgba(0,0,0,0.15) 5px,
+      rgba(255,255,255,0.07) 5px,
+      rgba(255,255,255,0.07) 10px
+    );
+  }
+
+  /* Open text zone */
+  .body-text-zone {
+    flex: 1;
+  }
+
+  .badge-icons { display: none; }
+
+  /* ── BOTTOM SECTION: white, URL ── */
+  .badge-bottom {
+    background: #ffffff;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .badge-bottom span {
+    font-size: 8.5px;
+    letter-spacing: 2px;
+    color: #333;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+
+  .badge::before, .badge::after, .punch-bl, .punch-br { display: none; }
+
+  /* ══ COLOR VARIANTS ══════════════════════════════ */
+  /* Red */
+  .red .badge-body   { background: #ea0000; }
+  /* Black */
+  .black .badge-body { background: #2c2c34; }
+  /* Green */
+  .green .badge-body { background: #0e7d25; }
+  /* Yellow — dark icons for contrast */
+  .yellow .badge-body { background: #d4a800; }
+  .yellow .badge-icons i { color: rgba(0,0,0,0.70); }
+  .yellow .body-stripe {
+    background-image: repeating-linear-gradient(
+      -45deg,
+      rgba(0,0,0,0.12) 0px,
+      rgba(0,0,0,0.12) 5px,
+      transparent 5px,
+      transparent 10px
+    );
+  }
+  /* Blue */
+  .blue .badge-body  { background: #0a3ea8; }
+  /* Purple */
+  .purple .badge-body{ background: #640fa0; }
+
+  /* Yellow badge-icons background slightly darker */
+  .yellow .badge-icons { background: rgba(0,0,0,0.16); border-top-color: rgba(0,0,0,0.15); }
+</style>
+</head>
+<body>
+
+<h1>ZTEX Construction — Badge Color System</h1>
+
+<div class="row">
+
+  <!-- RED -->
+  <div class="badge-wrap">
+    <div class="badge red" data-color="Red">
+      <div class="punch-bl"></div>
+      <div class="punch-br"></div>
+      <div class="badge-top">
+        <img src="assets/logos/ztex_logo.png" alt="ZTEX Construction">
+      </div>
+      <div class="accent"></div>
+      <div class="badge-body">
+        <div class="body-stripe"></div>
+        <div class="body-text-zone"></div>
+        <div class="badge-icons">
+          <i class="fas fa-hard-hat"></i>
+          <i class="fas fa-trowel-bricks"></i>
+          <i class="fas fa-truck-field"></i>
+        </div>
+      </div>
+      <div class="accent"></div>
+      <div class="badge-bottom"><span>ztexconstruction.com</span></div>
+    </div>
+    <div class="badge-label">Red</div>
+  </div>
+
+  <!-- BLACK -->
+  <div class="badge-wrap">
+    <div class="badge black" data-color="Black">
+      <div class="punch-bl"></div>
+      <div class="punch-br"></div>
+      <div class="badge-top">
+        <img src="assets/logos/ztex_logo.png" alt="ZTEX Construction">
+      </div>
+      <div class="accent"></div>
+      <div class="badge-body">
+        <div class="body-stripe"></div>
+        <div class="body-text-zone"></div>
+        <div class="badge-icons">
+          <i class="fas fa-hard-hat"></i>
+          <i class="fas fa-trowel-bricks"></i>
+          <i class="fas fa-truck-field"></i>
+        </div>
+      </div>
+      <div class="accent"></div>
+      <div class="badge-bottom"><span>ztexconstruction.com</span></div>
+    </div>
+    <div class="badge-label">Black</div>
+  </div>
+
+  <!-- GREEN -->
+  <div class="badge-wrap">
+    <div class="badge green" data-color="Green">
+      <div class="punch-bl"></div>
+      <div class="punch-br"></div>
+      <div class="badge-top">
+        <img src="assets/logos/ztex_logo.png" alt="ZTEX Construction">
+      </div>
+      <div class="accent"></div>
+      <div class="badge-body">
+        <div class="body-stripe"></div>
+        <div class="body-text-zone"></div>
+        <div class="badge-icons">
+          <i class="fas fa-hard-hat"></i>
+          <i class="fas fa-trowel-bricks"></i>
+          <i class="fas fa-truck-field"></i>
+        </div>
+      </div>
+      <div class="accent"></div>
+      <div class="badge-bottom"><span>ztexconstruction.com</span></div>
+    </div>
+    <div class="badge-label">Green</div>
+  </div>
+
+  <!-- YELLOW -->
+  <div class="badge-wrap">
+    <div class="badge yellow" data-color="Yellow">
+      <div class="punch-bl"></div>
+      <div class="punch-br"></div>
+      <div class="badge-top">
+        <img src="assets/logos/ztex_logo.png" alt="ZTEX Construction">
+      </div>
+      <div class="accent"></div>
+      <div class="badge-body">
+        <div class="body-stripe"></div>
+        <div class="body-text-zone"></div>
+        <div class="badge-icons">
+          <i class="fas fa-hard-hat"></i>
+          <i class="fas fa-trowel-bricks"></i>
+          <i class="fas fa-truck-field"></i>
+        </div>
+      </div>
+      <div class="accent"></div>
+      <div class="badge-bottom"><span>ztexconstruction.com</span></div>
+    </div>
+    <div class="badge-label">Yellow</div>
+  </div>
+
+  <!-- BLUE -->
+  <div class="badge-wrap">
+    <div class="badge blue" data-color="Blue">
+      <div class="punch-bl"></div>
+      <div class="punch-br"></div>
+      <div class="badge-top">
+        <img src="assets/logos/ztex_logo.png" alt="ZTEX Construction">
+      </div>
+      <div class="accent"></div>
+      <div class="badge-body">
+        <div class="body-stripe"></div>
+        <div class="body-text-zone"></div>
+        <div class="badge-icons">
+          <i class="fas fa-hard-hat"></i>
+          <i class="fas fa-trowel-bricks"></i>
+          <i class="fas fa-truck-field"></i>
+        </div>
+      </div>
+      <div class="accent"></div>
+      <div class="badge-bottom"><span>ztexconstruction.com</span></div>
+    </div>
+    <div class="badge-label">Blue</div>
+  </div>
+
+  <!-- PURPLE -->
+  <div class="badge-wrap">
+    <div class="badge purple" data-color="Purple">
+      <div class="punch-bl"></div>
+      <div class="punch-br"></div>
+      <div class="badge-top">
+        <img src="assets/logos/ztex_logo.png" alt="ZTEX Construction">
+      </div>
+      <div class="accent"></div>
+      <div class="badge-body">
+        <div class="body-stripe"></div>
+        <div class="body-text-zone"></div>
+        <div class="badge-icons">
+          <i class="fas fa-hard-hat"></i>
+          <i class="fas fa-trowel-bricks"></i>
+          <i class="fas fa-truck-field"></i>
+        </div>
+      </div>
+      <div class="accent"></div>
+      <div class="badge-bottom"><span>ztexconstruction.com</span></div>
+    </div>
+    <div class="badge-label">Purple</div>
+  </div>
+
+</div>
+
+</body>
+</html>
