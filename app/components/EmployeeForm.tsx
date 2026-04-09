@@ -13,6 +13,7 @@ interface EmployeeFormProps {
     title: string
     authorizations: string[]
     licenses: string[]
+    photoUrl?: string | null
   }
 }
 
@@ -26,6 +27,8 @@ export function EmployeeForm({ initialData }: EmployeeFormProps) {
   const [employeeId, setEmployeeId] = useState(initialData?.employeeId || '')
   const [authorizations, setAuthorizations] = useState<string[]>(initialData?.authorizations || [''])
   const [licenses, setLicenses] = useState<string[]>(initialData?.licenses || [''])
+  const [photoFile, setPhotoFile] = useState<File | null>(null)
+  const [photoPreview, setPhotoPreview] = useState<string | null>(initialData?.photoUrl || null)
 
   const addItem = (list: string[], setList: (v: string[]) => void) => {
     setList([...list, ''])
@@ -65,6 +68,23 @@ export function EmployeeForm({ initialData }: EmployeeFormProps) {
     setSaving(false)
 
     if (res.ok) {
+      const savedEmployee = await res.json()
+      const empId = initialData?.id || savedEmployee.id
+
+      // Upload photo if one was selected
+      if (photoFile && empId) {
+        const formData = new FormData()
+        formData.append('photo', photoFile)
+        formData.append('employeeId', empId)
+        const uploadRes = await fetch('/api/employees/upload', {
+          method: 'POST',
+          body: formData,
+        })
+        if (!uploadRes.ok) {
+          showToast('Employee saved but photo upload failed', 'error')
+        }
+      }
+
       showToast(initialData ? 'Employee updated' : 'Employee created', 'success')
       setTimeout(() => router.push('/admin'), 500)
     } else {
@@ -96,6 +116,46 @@ export function EmployeeForm({ initialData }: EmployeeFormProps) {
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="bg-ztex-dark rounded-xl p-6 border border-white/5 space-y-4">
+              {/* Photo Upload */}
+              <div>
+                <label className="block text-sm font-medium text-white/70 mb-1.5">Employee Photo</label>
+                <div className="flex items-center gap-4">
+                  {photoPreview ? (
+                    <img src={photoPreview} alt="Preview" className="w-16 h-16 rounded-full object-cover border-2 border-white/20" />
+                  ) : (
+                    <div className="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center border-2 border-white/20">
+                      <span className="text-xl font-bold text-white/50">
+                        {fullName ? fullName.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase() : '?'}
+                      </span>
+                    </div>
+                  )}
+                  <div className="flex-1">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0]
+                        if (file) {
+                          setPhotoFile(file)
+                          setPhotoPreview(URL.createObjectURL(file))
+                        }
+                      }}
+                      className="block w-full text-sm text-white/50 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-ztex-red file:text-white hover:file:bg-ztex-dark-red file:cursor-pointer"
+                    />
+                    <p className="text-xs text-white/30 mt-1">Max 2MB. JPG, PNG, or WebP.</p>
+                  </div>
+                  {photoPreview && (
+                    <button
+                      type="button"
+                      onClick={() => { setPhotoFile(null); setPhotoPreview(null) }}
+                      className="text-xs text-ztex-red hover:text-white transition-colors"
+                    >
+                      Remove
+                    </button>
+                  )}
+                </div>
+              </div>
+
               <div>
                 <label className="block text-sm font-medium text-white/70 mb-1.5">Employee ID (optional)</label>
                 <input

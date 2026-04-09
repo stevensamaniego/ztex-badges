@@ -17,6 +17,7 @@ export default function EditEmployeePage() {
     title: string
     authorizations: string[]
     licenses: string[]
+    photoUrl?: string | null
   } | null>(null)
   const [loading, setLoading] = useState(true)
 
@@ -36,6 +37,7 @@ export default function EditEmployeePage() {
             ...data,
             authorizations: JSON.parse(data.authorizations),
             licenses: JSON.parse(data.licenses),
+            photoUrl: data.photoUrl || null,
           })
           setLoading(false)
         })

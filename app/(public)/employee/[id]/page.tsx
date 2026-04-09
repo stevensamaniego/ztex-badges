@@ -35,16 +35,24 @@ export default async function EmployeePage({
         <div className="bg-ztex-dark rounded-2xl overflow-hidden shadow-2xl border border-white/5">
           {/* Name Header */}
           <div className="bg-gradient-to-r from-ztex-red to-ztex-dark-red p-6 text-center">
-            <div className="w-20 h-20 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-4 border-2 border-white/20">
-              <span className="text-3xl font-bold text-white">
-                {employee.fullName
-                  .split(' ')
-                  .map((n) => n[0])
-                  .join('')
-                  .slice(0, 2)
-                  .toUpperCase()}
-              </span>
-            </div>
+            {employee.photoUrl ? (
+              <img
+                src={employee.photoUrl}
+                alt={employee.fullName}
+                className="w-24 h-24 rounded-full object-cover mx-auto mb-4 border-2 border-white/20"
+              />
+            ) : (
+              <div className="w-20 h-20 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-4 border-2 border-white/20">
+                <span className="text-3xl font-bold text-white">
+                  {employee.fullName
+                    .split(' ')
+                    .map((n) => n[0])
+                    .join('')
+                    .slice(0, 2)
+                    .toUpperCase()}
+                </span>
+              </div>
+            )}
             <h1 className="text-2xl font-bold text-white">{employee.fullName}</h1>
             <p className="text-white/80 mt-1 text-lg">{employee.title}</p>
           </div>
